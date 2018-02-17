@@ -2,7 +2,7 @@
 // @name         GitHub -> JIRA linker
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  In GitHub, adds links to Oath JIRA pages is the JIRA ticket is referred to as [XXX-###] in the PR title.
+// @description  In GitHub, adds links to the JIRA tickets referred to as [XXX-###] in the PR/commit title.
 // @author       Volker Neumann
 // @match        https://github.com/*
 // @grant        none
