@@ -12,7 +12,6 @@
     'use strict';
 
     // TODO:
-    // * refactor shared code for adding secondLine links
     // * add link when viewing commit details page
 
     var jiraTicketPath = "https://jira.your_org.com/browse/";
@@ -29,7 +28,6 @@
         } else if (path.match(/^\/.*\/.*\/commits\/.*/) || path.match(/^\/.*\/.*\/pull\/\d+\/commits$/)) {
             // pr commits: /org/proj/pull/####/commits
             // branch commits: /org/proj/commits/[branchName]
-
             handleCommitList();
         }
     }
@@ -52,15 +50,7 @@
             var link = $("a.js-navigation-open", issueDiv)[0];
             var linkText = $(link).html();
             var secondLine = $("div.mt-1", issueDiv)[0];
-            var matches = linkText.match(/\[[A-Z]+-\d+\]/g);
-            if (matches) {
-                for (var j = 0; j < matches.length; j++) {
-                    var match = matches[j];
-                    var issueId = /\[([A-Z]+-\d+)\]/g.exec(match)[1];
-                    var linkHtml = linkTemplate.replace(/ISSUE_ID/g, issueId);
-                    $(secondLine).append(linkHtml);
-                }
-            }
+            addLinksToSecondLine(secondLine, linkText);
         }
     }
 
@@ -74,15 +64,19 @@
                 var commitLink = $("a", commitTitleParagraph)[0];
                 var linkText = $(commitLink).html();
                 var secondLine = $("div.commit-meta", commitCell)[0];
-                var matches = linkText.match(/\[[A-Z]+-\d+\]/g);
-                if (matches) {
-                    for (var j = 0; j < matches.length; j++) {
-                        var match = matches[j];
-                        var issueId = /\[([A-Z]+-\d+)\]/g.exec(match)[1];
-                        var linkHtml = linkTemplate.replace(/ISSUE_ID/g, issueId);
-                        $(secondLine).append(linkHtml);
-                    }
-                }
+                addLinksToSecondLine(secondLine, linkText);
+            }
+        }
+    }
+
+    function addLinksToSecondLine(secondLine, linkText) {
+        var matches = linkText.match(/\[[A-Z]+-\d+\]/g);
+        if (matches) {
+            for (var i = 0; i < matches.length; i++) {
+                var match = matches[i];
+                var issueId = /\[([A-Z]+-\d+)\]/g.exec(match)[1];
+                var linkHtml = linkTemplate.replace(/ISSUE_ID/g, issueId);
+                $(secondLine).append(linkHtml);
             }
         }
     }
