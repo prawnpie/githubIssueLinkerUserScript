@@ -47,15 +47,13 @@
      */
     function handlePrList() {
         console.log("doing pull request list");
-        var issueDivs = $("ul.js-active-navigation-container li div div:nth-of-type(3)");
-
-        for (var i = 0; i < issueDivs.length; i++) {
-            var issueDiv = $(issueDivs[i]);
+        $("ul.js-active-navigation-container li div div:nth-of-type(3)").each(function() {
+            var issueDiv = $(this);
             var link = $("a.js-navigation-open", issueDiv)[0];
             var linkText = $(link).html();
             var secondLine = $("div.mt-1", issueDiv)[0];
             addLinksToSecondLine(secondLine, linkText);
-        }
+        });
     }
 
     /**
@@ -63,17 +61,14 @@
      */
     function handleCommitList() {
         console.log("doing commits");
-        var commitTitleParagraphs = $("p.commit-title");
-        if (commitTitleParagraphs) {
-            for (var i = 0; i < commitTitleParagraphs.length; i++) {
-                var commitTitleParagraph = commitTitleParagraphs[i];
-                var commitCell = commitTitleParagraph.parentElement;
-                var commitLink = $("a", commitTitleParagraph)[0];
-                var linkText = $(commitLink).html();
-                var secondLine = $("div.commit-meta", commitCell)[0];
-                addLinksToSecondLine(secondLine, linkText);
-            }
-        }
+        $("p.commit-title").each(function() {
+            var commitTitleParagraph = this;
+            var commitCell = commitTitleParagraph.parentElement;
+            var commitLink = $("a", commitTitleParagraph)[0];
+            var linkText = $(commitLink).html();
+            var secondLine = $("div.commit-meta", commitCell)[0];
+            addLinksToSecondLine(secondLine, linkText);
+        });
     }
 
     /**
