@@ -32,17 +32,21 @@
         }
     }
 
+    /**
+     * insert link into titles on PR page
+     */
     function handlePrDetail() {
         console.log("doing single pull request details");
-        // insert link into titles on PR page
         $("span.js-issue-title").html(function() {
             return $(this).html().replace(/\[([A-Z]+-\d+)\]/g, '[<a href="' + jiraTicketPath + '$1">$1</a>]');
         });
     }
 
+    /**
+     * add links into second line on the PR list page
+     */
     function handlePrList() {
         console.log("doing pull request list");
-        // add links into row on the PR list page
         var issueDivs = $("ul.js-active-navigation-container li div div:nth-of-type(3)");
 
         for (var i = 0; i < issueDivs.length; i++) {
@@ -54,6 +58,9 @@
         }
     }
 
+    /**
+     * add links into second line on a commit list page
+     */
     function handleCommitList() {
         console.log("doing commits");
         var commitTitleParagraphs = $("p.commit-title");
@@ -69,12 +76,18 @@
         }
     }
 
+    /**
+     * given the text of a commit or pr, find the issues and link to them at the end of the secondLine div
+     *
+     * @param secondLine a DIV to which the links will be added
+     * @param linkText the text from which the links will be parsed
+     **/
     function addLinksToSecondLine(secondLine, linkText) {
-        var matches = linkText.match(/\[[A-Z]+-\d+\]/g);
-        if (matches) {
-            for (var i = 0; i < matches.length; i++) {
-                var match = matches[i];
-                var issueId = /\[([A-Z]+-\d+)\]/g.exec(match)[1];
+        var issueIdsWithBrackets = linkText.match(/\[[A-Z]+-\d+\]/g);
+        if (issueIdsWithBrackets) {
+            for (var i = 0; i < issueIdsWithBrackets.length; i++) {
+                var issueIdWithBrackets = issueIdsWithBrackets[i];
+                var issueId = /\[([A-Z]+-\d+)\]/g.exec(issueIdWithBrackets)[1];
                 var linkHtml = linkTemplate.replace(/ISSUE_ID/g, issueId);
                 $(secondLine).append(linkHtml);
             }
