@@ -29,6 +29,9 @@
             // pr commits: /org/proj/pull/####/commits
             // branch commits: /org/proj/commits/[branchName]
             handleCommitList();
+        } else if (path.match(/^\/.*\/.*\/releases*$/) || path.match(/^\/.*\/.*\/releases\/tag\/.*$/)) {
+            // PR details: /org/proj/releases or /org/proj/releases/tag/*
+            handleReleases();
         }
     }
 
@@ -68,6 +71,14 @@
             var linkText = $(commitLink).html();
             var secondLine = $("div.commit-meta", commitCell)[0];
             addLinksToSecondLine(secondLine, linkText);
+        });
+    }
+
+    function handleReleases() {
+        console.log("doing releases");
+        $("div.markdown-body").html(function() {
+            // TODO: fix up code duplication with handlePrDetail.
+            return $(this).html().replace(/\[([A-Z]+-\d+)\]/g, '[<a href="' + jiraTicketPath + '$1">$1</a>]');
         });
     }
 
