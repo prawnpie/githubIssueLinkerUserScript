@@ -19,8 +19,8 @@
 
     function doIt() {
         var path = window.location.pathname;
-        if (path.match(/^\/.*\/.*\/pull\/\d+$/)) {
-            // PR details: /org/proj/pull/12345
+        if (path.match(/^\/.*\/.*\/pull\/\d+$/) || path.match(/^\/.*\/.*\/pull\/\d+\/commits$/) || path.match(/^\/.*\/.*\/pull\/\d+\/files$/)) {
+            // PR details: /org/proj/pull/12345, /org/proj/pull/12345/commits, /org/proj/pull/12345/files
             handlePrDetail();
         } else if (path.match(/^\/.*\/.*\/pulls$/)) {
             // PR list - /org/proj/pulls
