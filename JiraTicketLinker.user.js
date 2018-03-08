@@ -22,14 +22,16 @@
         if (path.match(/^\/.*\/.*\/pull\/\d+$/) || path.match(/^\/.*\/.*\/pull\/\d+\/commits$/) || path.match(/^\/.*\/.*\/pull\/\d+\/files$/)) {
             // PR details: /org/proj/pull/12345, /org/proj/pull/12345/commits, /org/proj/pull/12345/files
             handlePrDetail();
+            if( path.match(/^\/.*\/.*\/pull\/\d+\/commits$/) ){
+                handleCommitList();
+            }
         } else if (path.match(/^\/.*\/.*\/pulls$/)) {
             // PR list - /org/proj/pulls
             handlePrList();
-        } else if (path.match(/^\/.*\/.*\/commits\/.*/) || path.match(/^\/.*\/.*\/pull\/\d+\/commits$/)) {
-            // pr commits: /org/proj/pull/####/commits
+        } else if (path.match(/^\/.*\/.*\/commits\/.*/)) {
             // branch commits: /org/proj/commits/[branchName]
             handleCommitList();
-        } else if (path.match(/^\/.*\/.*\/releases*$/) || path.match(/^\/.*\/.*\/releases\/tag\/.*$/)) {
+        } else if (path.match(/^\/.*\/.*\/releases*$/) || path.match(/^\/.*\/.*\/releases\/tag\/.*$/) ) {
             // PR details: /org/proj/releases or /org/proj/releases/tag/*
             handleReleases();
         }
@@ -74,13 +76,14 @@
         });
     }
 
-    function handleReleases() {
+    function handleReleases(){
         console.log("doing releases");
         $("div.markdown-body").html(function() {
             // TODO: fix up code duplication with handlePrDetail.
             return $(this).html().replace(/\[([A-Z]+-\d+)\]/g, '[<a href="' + jiraTicketPath + '$1">$1</a>]');
         });
     }
+
 
     /**
      * given the text of a commit or pr, find the issues and link to them at the end of the secondLine div
