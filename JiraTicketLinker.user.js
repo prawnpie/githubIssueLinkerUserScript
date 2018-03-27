@@ -13,6 +13,7 @@
 
     // TODO:
     // * add link when viewing commit details page
+    // * going to PR and then clicking on one of the PR commits leads to error logging
 
     var jiraTicketPath = "https://jira.your_org.com/browse/";
     var linkTemplate = '<span class="d-inline-block">[<a class="muted-link" href="' + jiraTicketPath + 'ISSUE_ID">ISSUE_ID</a>]</span>&nbsp;';
@@ -98,7 +99,10 @@
                 var issueIdWithBrackets = issueIdsWithBrackets[i];
                 var issueId = /\[([A-Z]+-\d+)\]/g.exec(issueIdWithBrackets)[1];
                 var linkHtml = linkTemplate.replace(/ISSUE_ID/g, issueId);
-                $(secondLine).append(linkHtml);
+                var alreadyLinked = $(secondLine).html().includes(issueId);
+                if( !alreadyLinked ){
+                    $(secondLine).append(linkHtml);
+                }
             }
         }
     }
