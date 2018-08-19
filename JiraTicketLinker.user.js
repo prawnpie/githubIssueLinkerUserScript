@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         GitHub -> JIRA linker
 // @namespace    http://tampermonkey.net/
-// @version      0.1
 // @description  In GitHub, adds links to the JIRA tickets referred to as [XXX-###] in the PR/commit title.
+// @version      0.3
 // @author       Volker Neumann
 // @match        https://github.com/*
 // @grant        none
@@ -46,6 +46,16 @@
         $("span.js-issue-title").html(function() {
             return $(this).html().replace(/\[([A-Z]+-\d+)\]/g, '[<a href="' + jiraTicketPath + '$1">$1</a>]');
         });
+        var saveButton = $("#edit_header_2468282 > button.btn")
+        if( ! saveButton.hasClass("hasListener") ){
+            // don't want to add duplicate listeners, hasListener class is a marker
+            saveButton.click( runHandlePrDetailLater );
+            saveButton.addClass("hasListener");
+        }
+    }
+
+    function runHandlePrDetailLater(){
+        setTimeout( handlePrDetail, 3000 ); // loose :( but how to detect when the title gets changed by someone else?
     }
 
     /**
