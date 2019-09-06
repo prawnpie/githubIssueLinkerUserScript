@@ -2,7 +2,7 @@
 // @name         GitHub -> JIRA linker
 // @namespace    http://tampermonkey.net/
 // @description  In GitHub, adds links to the JIRA tickets referred to as [XXX-###] in the PR/commit title.
-// @version      0.3
+// @version      0.4
 // @author       Volker Neumann
 // @match        https://github.com/*
 // @grant        none
@@ -63,7 +63,7 @@
      */
     function handlePrList() {
         console.log("doing pull request list");
-        $("ul.js-active-navigation-container li div div:nth-of-type(3)").each(function() {
+        $("div.js-active-navigation-container div.js-navigation-item div div.p-2").each(function() {
             var issueDiv = $(this);
             var link = $("a.js-navigation-open", issueDiv)[0];
             var linkText = $(link).html();
